@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Office Tycoon</title>
+    <style>
+        :root {
+            --bg-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #16a34a;
+            --warning: #ca8a04;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stats-box {
+            display: flex;
+            gap: 25px;
+        }
+
+        .stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--success);
+        }
+
+        .stat-value.neutral {
+            color: var(--text-dark);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid var(--bg-color);
+            padding-bottom: 8px;
+        }
+
+        /* Manual Work Section */
+        .work-area {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .btn-work {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+            width: 100%;
+            box-shadow: 0 4px 0 #1e40af;
+        }
+
+        .btn-work:active {
+            transform: translateY(4px);
+            box-shadow: none;
+        }
+
+        .btn-work:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* Shop Items */
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .shop-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        .item-info h3 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .item-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .btn-buy {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            min-width: 110px;
+        }
+
+        .btn-buy:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        /* Visual Office Floor */
+        .office-floor {
+            margin-top: 20px;
+            background: #e2e8f0;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 200px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-content: flex-start;
+        }
+
+        .desk-unit {
+            background: white;
+            border: 2px solid #94a3b8;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: popIn 0.3s ease;
+        }
+
+        .desk-unit span {
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .log-box {
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 4px solid var(--primary);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div>
+            <h1>🏢 Startup Office Tycoon</h1>
+            <small style="color: var(--text-muted);">Bangun kerajaan bisnismu dari garasi!</small>
+        </div>
+        <div class="stats-box">
+            <div class="stat">
+                <span class="stat-label">Saldo Perusahaan</span>
+                <span class="stat-value" id="money-display">Rp 0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Pendapatan / Detik</span>
+                <span class="stat-value neutral" id="income-display">Rp 0/dtk</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Level Kantor</span>
+                <span class="stat-value neutral" id="level-display">Garasi (1)</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="grid">
+        <!-- Kolom Kiri: Aksi & Visual Kantor -->
+        <div class="panel">
+            <h2>💻 Meja Kerjamu</h2>
+            <div class="work-area">
+                <p style="margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);">
+                    Klik tombol di bawah untuk menyelesaikan proyek klien secara manual.
+                </p>
+                <button class="btn-work" onclick="doManualWork()">
+                    Kerjakan Proyek (+<span id="click-power-display">Rp 10.000</span>)
+                </button>
+            </div>
+
+            <div class="log-box" id="status-log">
+                Selamat datang, CEO! Mulai kerjakan proyek untuk merekrut tim pertamamu.
+            </div>
+
+            <h2 style="margin-top: 20px;">Floor Plan Kantor (<span id="emp-count">0</span>/<span id="max-emp">3</span> Staf)</h2>
+            <div class="office-floor" id="office-floor">
+                <!-- Karyawan muncul di sini -->
+            </div>
+        </div>
+
+        <!-- Kolom Kanan: Rekrutmen & Upgrade -->
+        <div class="panel">
+            <h2>🛒 Rekrutmen & Fasilitas Kantor</h2>
+            <div class="item-list" id="shop-container">
+                <!-- Item toko dirender via JS -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // State Game
+    let game = {
+        money: 0,
+        clickPower: 10000,
+        officeLevel: 1,
+        maxEmployees: 3,
+        employees: []
+    };
+
+    const officeTiers = [
+        { level: 1, name: "Garasi Sempit", maxEmp: 3, cost: 0 },
+        { level: 2, name: "Ruko 2 Lantai", maxEmp: 8, cost: 500000 },
+        { level: 3, name: "Gedung Coworking", maxEmp: 15, cost: 2500000 },
+        { level: 4, name: "Menara SCBD", maxEmp: 30, cost: 15000000 }
+    ];
+
+    const shopItems = [
+        {
+            id: 'coffee',
+            name: '☕ Mesin Kopi Espresso',
+            desc: 'Meningkatkan hasil kerja manual (+Rp 15.000/klik)',
+            baseCost: 50000,
+            count: 0,
+            type: 'upgrade_click',
+            value: 15000
+        },
+        {
+            id: 'intern',
+            name: '🎓 Anak Magang (Intern)',
+            desc: 'Menghasilkan Rp 5.000 / detik',
+            baseCost: 100000,
+            count: 0,
+            type: 'employee',
+            icon: '🧑‍🎓',
+            label: 'Intern',
+            income: 5000
+        },
+        {
+            id: 'dev',
+            name: '👨‍💻 Software Developer',
+            desc: 'Menghasilkan Rp 25.000 / detik',
+            baseCost: 450000,
+            count: 0,
+            type: 'employee',
+            icon: '👨‍💻',
+            label: 'Dev',
+            income: 25000
+        },
+        {
+            id: 'marketer',
+            name: '📈 Digital Marketer',
+            desc: 'Menghasilkan Rp 80.000 / detik',
+            baseCost: 1200000,
+            count: 0,
+            type: 'employee',
+            icon: '👩‍💼',
+            label: 'Marketing',
+            income: 80000
+        },
+        {
+            id: 'manager',
+            name: '👔 Project Manager',
+            desc: 'Menghasilkan Rp 250.000 / detik',
+            baseCost: 3500000,
+            count: 0,
+            type: 'employee',
+            icon: '🤵',
+            label: 'Manager',
+            income: 250000
+        },
+        {
+            id: 'expand',
+            name: '🏢 Perluas Kantor (Upgrade)',
+            desc: 'Tambah kapasitas karyawan di kantor',
+            baseCost: 500000,
+            count: 0,
+            type: 'office_upgrade'
+        }
+    ];
+
+    // Format Rupiah
+    function formatRupiah(angka) {
+        return 'Rp ' + Math.floor(angka).toLocaleString('id-ID');
+    }
+
+    // Hitung total pendapatan pasif per detik
+    function getPassiveIncome() {
+        return game.employees.reduce((total, emp) => total + emp.income, 0);
+    }
+
+    // Kerja Manual
+    function doManualWork() {
+        game.money += game.clickPower;
+        updateUI();
+    }
+
+    // Hitung harga item saat ini (naik 20% tiap pembelian)
+    function getItemCost(item) {
+        if (item.type === 'office_upgrade') {
+            const nextTier = officeTiers[game.officeLevel];
+            return nextTier ? nextTier.cost : 0;
+        }
+        return Math.floor(item.baseCost * Math.pow(1.2, item.count));
+    }
+
+    // Beli Item / Rekrut
+    function buyItem(index) {
+        const item = shopItems[index];
+        const cost = getItemCost(item);
+
+        if (game.money < cost) return;
+
+        if (item.type === 'employee') {
+            if (game.employees.length >= game.maxEmployees) {
+                logMessage("❌ Kantor penuh! Upgrade kapasitas kantor terlebih dahulu.");
+                return;
+            }
+            game.money -= cost;
+            item.count++;
+            game.employees.push({
+                icon: item.icon,
+                label: item.label,
+                income: item.income
+            });
+            renderOfficeFloor();
+            logMessage(`✅ Berhasil merekrut ${item.label}!`);
+        } 
+        else if (item.type === 'upgrade_click') {
+            game.money -= cost;
+            item.count++;
+            game.clickPower += item.value;
+            logMessage(`☕ Produktivitas manual meningkat!`);
+        } 
+        else if (item.type === 'office_upgrade') {
+            const nextTier = officeTiers[game.officeLevel];
+            if (!nextTier) return;
+            game.money -= cost;
+            game.officeLevel = nextTier.level;
+            game.maxEmployees = nextTier.maxEmp;
+            logMessage(`🎉 Selamat! Kantor pindah ke ${nextTier.name} (Kapasitas: ${nextTier.maxEmp} staf).`);
+        }
+
+        updateUI();
+    }
+
+    function logMessage(msg) {
+        document.getElementById('status-log').innerText = msg;
+    }
+
+    // Render visual meja karyawan
+    function renderOfficeFloor() {
+        const floor = document.getElementById('office-floor');
+        floor.innerHTML = '';
+        game.employees.forEach(emp => {
+            const div = document.createElement('div');
+            div.className = 'desk-unit';
+            div.innerHTML = `${emp.icon}<span>${emp.label}</span>`;
+            floor.appendChild(div);
+        });
+    }
+
+    // Render Toko
+    function renderShop() {
+        const container = document.getElementById('shop-container');
+        container.innerHTML = '';
+
+        shopItems.forEach((item, index) => {
+            const cost = getItemCost(item);
+            let isMaxed = false;
+            let title = item.name;
+            let desc = item.desc;
+
+            if (item.type === 'office_upgrade') {
+                const nextTier = officeTiers[game.officeLevel];
+                if (!nextTier) {
+                    isMaxed = true;
+                    title = "🏢 Kantor Level Maksimal";
+                    desc = "Kamu sudah memiliki menara pencakar langit!";
+                } else {
+                    title = `🏢 Pindah ke ${nextTier.name}`;
+                    desc = `Kapasitas naik menjadi ${nextTier.maxEmp} karyawan`;
+                }
+            } else {
+                title += ` (${item.count})`;
+            }
+
+            const isDisabled = isMaxed || game.money < cost || (item.type === 'employee' && game.employees.length >= game.maxEmployees);
+
+            const itemEl = document.createElement('div');
+            itemEl.className = 'shop-item';
+            itemEl.innerHTML = `
+                <div class="item-info">
+                    <h3>${title}</h3>
+                    <p>${desc}</p>
+                </div>
+                <button class="btn-buy" onclick="buyItem(${index})" ${isDisabled ? 'disabled' : ''}>
+                    ${isMaxed ? 'MAKSIMAL' : formatRupiah(cost)}
+                </button>
+            `;
+            container.appendChild(itemEl);
+        });
+    }
+
+    // Update seluruh tampilan angka
+    function updateUI() {
+        document.getElementById('money-display').innerText = formatRupiah(game.money);
+        document.getElementById('income-display').innerText = formatRupiah(getPassiveIncome()) + '/dtk';
+        document.getElementById('click-power-display').innerText = formatRupiah(game.clickPower);
+        
+        const currentTier = officeTiers[game.officeLevel - 1];
+        document.getElementById('level-display').innerText = `${currentTier.name} (${game.officeLevel})`;
+        document.getElementById('emp-count').innerText = game.employees.length;
+        document.getElementById('max-emp').innerText = game.maxEmployees;
+
+        renderShop();
+    }
+
+    // Game Loop (Berjalan setiap 1 detik)
+    setInterval(() => {
+        const passive = getPassiveIncome();
+        if (passive > 0) {
+            game.money += passive;
+            updateUI();
+        }
+    }, 1000);
+
+    // Inisialisasi awal
+    updateUI();
+</script>
+
+</body>
+</html>
